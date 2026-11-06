@@ -5,6 +5,7 @@
 #define FILE_NAME "students.dat"
 #define TEMP_FILE "temp.dat"
 
+
 // Structure to store student records
 struct Student {
     int rollNo;
@@ -17,8 +18,15 @@ struct Student {
     char grade;
 };
 
+
 // Function prototypes
 void addStudent();
+// Comparison function for qsort to sort by roll number
+int compareByRollNo(const void *a, const void *b) {
+    struct Student *s1 = (struct Student *)a;
+    struct Student *s2 = (struct Student *)b;
+    return (s1->rollNo - s2->rollNo);
+}
 void displayStudents();
 void searchStudent();
 void updateStudent();
@@ -27,6 +35,7 @@ void calculateResult();
 void databaseSummary();
 int  isDuplicateRollNo(int rollNo);
 char determineGrade(float percentage);
+
 
 int main() {
     int choice;
@@ -87,6 +96,7 @@ int main() {
     return 0;
 }
 
+
 // Helper function to check if roll number already exists
 int isDuplicateRollNo(int rollNo) {
     FILE *fp = fopen(FILE_NAME, "rb");
@@ -106,6 +116,7 @@ int isDuplicateRollNo(int rollNo) {
     return 0;
 }
 
+
 // Helper function to assign grade
 char determineGrade(float percentage) {
     if (percentage >= 90.0f) return 'A';
@@ -115,6 +126,7 @@ char determineGrade(float percentage) {
     if (percentage >= 50.0f) return 'E';
     return 'F';
 }
+
 
 // 1. Add Student Record
 void addStudent() {
@@ -176,7 +188,8 @@ void addStudent() {
     printf("Calculated Total: %.2f | Percentage: %.2f%% | Grade: %c\n", s.totalMarks, s.percentage, s.grade);
 }
 
-// 2. Display All Records
+
+// 2. Display All Records (Sorted by Roll Number)
 void displayStudents() {
     FILE *fp = fopen(FILE_NAME, "rb");
     if (fp == NULL) {
@@ -184,27 +197,47 @@ void displayStudents() {
         return;
     }
 
-    struct Student s;
-    int count = 0;
+    // Determine total records in file
+    fseek(fp, 0, SEEK_END);
+    long fileSize = ftell(fp);
+    rewind(fp);
 
+    int count = fileSize / sizeof(struct Student);
+    if (count == 0) {
+        printf("\nDatabase is empty.\n");
+        fclose(fp);
+        return;
+    }
+
+    // Allocate memory and read all records
+    struct Student *list = (struct Student *)malloc(count * sizeof(struct Student));
+    if (list == NULL) {
+        printf("Memory allocation error!\n");
+        fclose(fp);
+        return;
+    }
+
+    fread(list, sizeof(struct Student), count, fp);
+    fclose(fp);
+
+    // Sort records in ascending order of roll number
+    qsort(list, count, sizeof(struct Student), compareByRollNo);
+
+    // Print formatted table
     printf("\n---------------------------------------------------------------------------------------\n");
     printf("%-8s %-20s %-10s %-5s %-12s %-12s %-6s\n", "Roll No", "Name", "Branch", "Sem", "Total Marks", "Percentage", "Grade");
     printf("---------------------------------------------------------------------------------------\n");
 
-    while (fread(&s, sizeof(struct Student), 1, fp) == 1) {
+    for (int i = 0; i < count; i++) {
         printf("%-8d %-20s %-10s %-5d %-12.2f %-12.2f %-6c\n",
-               s.rollNo, s.name, s.branch, s.semester, s.totalMarks, s.percentage, s.grade);
-        count++;
+               list[i].rollNo, list[i].name, list[i].branch, list[i].semester,
+               list[i].totalMarks, list[i].percentage, list[i].grade);
     }
 
     printf("---------------------------------------------------------------------------------------\n");
-    if (count == 0) {
-        printf("Database is empty.\n");
-    } else {
-        printf("Total records displayed: %d\n", count);
-    }
+    printf("Total records displayed: %d (Sorted by Roll No)\n", count);
 
-    fclose(fp);
+    free(list);
 }
 
 // 3. Search Student
@@ -309,6 +342,7 @@ void updateStudent() {
     }
 }
 
+
 // 5. Delete Student Record
 void deleteStudent() {
     FILE *fp = fopen(FILE_NAME, "rb");
@@ -350,6 +384,7 @@ void deleteStudent() {
         printf("No record found with Roll Number %d.\n", rollNo);
     }
 }
+
 
 // 6. Calculate Academic Result
 void calculateResult() {
@@ -394,6 +429,7 @@ void calculateResult() {
 
     fclose(fp);
 }
+
 
 // 7. Database Summary
 void databaseSummary() {
