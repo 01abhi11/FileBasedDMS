@@ -25,7 +25,7 @@ void updateStudent();
 void deleteStudent();
 void calculateResult();
 void databaseSummary();
-int isDuplicateRollNo(int rollNo);
+int  isDuplicateRollNo(int rollNo);
 char determineGrade(float percentage);
 
 int main() {
