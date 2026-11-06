@@ -17,7 +17,7 @@ struct Student {
     char grade;
 };
 
-// Function prototypes[cite: 1, 2, 32]
+// Function prototypes
 void addStudent();
 void displayStudents();
 void searchStudent();
