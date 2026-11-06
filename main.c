@@ -110,6 +110,7 @@ char determineGrade(float percentage) {
     if (percentage >= 80.0f) return 'B';
     if (percentage >= 70.0f) return 'C';
     if (percentage >= 60.0f) return 'D';
+    if (percentage >= 50.0f) return 'E';
     return 'F';
 }
 
