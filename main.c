@@ -79,30 +79,81 @@ int main() {
     return 0;
 }
 
+// Helper function to check if a roll number is already in the file[cite: 32]
+int isDuplicateRollNo(int rollNo) {
+    FILE *fp = fopen(FILE_NAME, "rb");
+    if (fp == NULL) {
+        return 0; // File does not exist yet, so no duplicates possible
+    }
+
+    struct Student temp;
+    while (fread(&temp, sizeof(struct Student), 1, fp) == 1) {
+        if (temp.rollNo == rollNo) {
+            fclose(fp);
+            return 1; // Duplicate found
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
+
 void addStudent() {
-    printf("\n[Feature: Add Student - coming next]\n");
-}
+    struct Student s;
+    FILE *fp;
 
-void displayStudents() {
-    printf("\n[Feature: Display Students - coming soon]\n");
-}
+    printf("\n--- Add Student Record ---\n");
+    printf("Enter Roll Number: ");
+    if (scanf("%d", &s.rollNo) != 1) {
+        printf("Invalid input for roll number!\n");
+        while (getchar() != '\n'); // clear buffer
+        return;
+    }
 
-void searchStudents() {
-    printf("\n[Feature: Search Student - coming soon]\n");
-}
+    if (isDuplicateRollNo(s.rollNo)) {
+        printf("Error: Student with Roll Number %d already exists!\n", s.rollNo);
+        return;
+    }
 
-void updateStudents() {
-    printf("\n[Feature: Update Student - coming soon]\n");
-}
+    printf("Enter Student Name: ");
+    scanf(" %[^\n]s", s.name);
 
-void deleteStudents() {
-    printf("\n[Feature: Delete Student - coming soon]\n");
-}
+    printf("Enter Branch: ");
+    scanf("%s", s.branch);
 
-void calculateResults() {
-    printf("\n[Feature: Calculate Results - coming soon]\n");
-}
+    printf("Enter Semester (1-8): ");
+    scanf("%d", &s.semester);
 
-void databaseSummary() {
-    printf("\n[Feature: Database Summary - coming soon]\n");
+    s.totalMarks = 0;
+    for (int i = 0; i < 5; i++) {
+        do {
+            printf("Enter marks for Subject %d (0-100): ", i + 1);
+            scanf("%f", &s.marks[i]);
+            if (s.marks[i] < 0 || s.marks[i] > 100) {
+                printf("Invalid marks! Please enter a value between 0 and 100.\n");
+            }
+        } while (s.marks[i] < 0 || s.marks[i] > 100);
+        s.totalMarks += s.marks[i];
+    }
+
+    s.percentage = s.totalMarks / 5.0f;
+
+    // Grade assignment
+    if (s.percentage >= 90) s.grade = 'A';
+    else if (s.percentage >= 80) s.grade = 'B';
+    else if (s.percentage >= 70) s.grade = 'C';
+    else if (s.percentage >= 60) s.grade = 'D';
+    else s.grade = 'F';
+
+    // Append record to file
+    fp = fopen(FILE_NAME, "ab");
+    if (fp == NULL) {
+        printf("Error: Could not open file for writing!\n");
+        return;
+    }
+
+    fwrite(&s, sizeof(struct Student), 1, fp);
+    fclose(fp);
+
+    printf("\nStudent record added successfully!\n");
 }
