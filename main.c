@@ -17,4 +17,17 @@ struct Student {
 
 };
 
+//Function prototypes:
+void addStudent();
+void displayStudents();
+void searchStudents();
+void updateStudents();
+void deleteStudents();
+void calculateResults();
+void databaseSummary();
 
+
+int main() {
+    printf("Student DataBase Management System\n");
+    return 0;
+}
