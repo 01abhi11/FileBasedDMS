@@ -171,6 +171,7 @@ void addStudent() {
     fclose(fp);
 
     printf("\nStudent record added successfully!\n");
+    printf("Calculated Total: %.2f | Percentage: %.2f%% | Grade: %c\n", s.totalMarks, s.percentage, s.grade);
 }
 
 // 2. Display All Records
