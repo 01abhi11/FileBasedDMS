@@ -302,6 +302,7 @@ void updateStudent() {
         remove(FILE_NAME);
         rename(TEMP_FILE, FILE_NAME);
         printf("\nStudent record updated successfully!\n");
+        printf("Calculated Total: %.2f | Percentage: %.2f%% | Grade: %c\n", s.totalMarks, s.percentage, s.grade);
     } else {
         remove(TEMP_FILE);
         printf("No record found with Roll Number %d.\n", rollNo);
