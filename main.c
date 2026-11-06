@@ -46,9 +46,11 @@ int main() {
         printf("----------------------------------------\n");
         printf("Enter your choice (1-8): ");
 
+        // Check if input is a valid integer
         if (scanf("%d", &choice) != 1) {
             printf("\nInvalid input! Please enter a number.\n");
-            while (getchar() != '\n'); // Clear input buffer[cite: 1, 4]
+            while (getchar() != '\n'); // Clear input buffer
+            choice = 0; // Set to invalid so it loops again
             continue;
         }
 
