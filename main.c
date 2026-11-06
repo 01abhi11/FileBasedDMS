@@ -98,6 +98,30 @@ int isDuplicateRollNo(int rollNo) {
     return 0;
 }
 
+void displayStudents() {
+    printf("\n[Feature: Display Students - coming soon]\n");
+}
+
+void searchStudents() {
+    printf("\n[Feature: Search Student - coming soon]\n");
+}
+
+void updateStudents() {
+    printf("\n[Feature: Update Student - coming soon]\n");
+}
+
+void deleteStudents() {
+    printf("\n[Feature: Delete Student - coming soon]\n");
+}
+
+void calculateResults() {
+    printf("\n[Feature: Calculate Results - coming soon]\n");
+}
+
+void databaseSummary() {
+    printf("\n[Feature: Database Summary - coming soon]\n");
+}
+
 void addStudent() {
     struct Student s;
     FILE *fp;
@@ -156,4 +180,28 @@ void addStudent() {
     fclose(fp);
 
     printf("\nStudent record added successfully!\n");
+}
+
+void displayStudents() {
+    printf("\n[Feature: Display Students - coming soon]\n");
+}
+
+void searchStudents() {
+    printf("\n[Feature: Search Student - coming soon]\n");
+}
+
+void updateStudents() {
+    printf("\n[Feature: Update Student - coming soon]\n");
+}
+
+void deleteStudents() {
+    printf("\n[Feature: Delete Student - coming soon]\n");
+}
+
+void calculateResults() {
+    printf("\n[Feature: Calculate Results - coming soon]\n");
+}
+
+void databaseSummary() {
+    printf("\n[Feature: Database Summary - coming soon]\n");
 }
